@@ -1,56 +1,76 @@
 import axios from "axios";
+import formatDate from "../utils/formatDate";
 import {
-    GET_TODAYS_SCHEDULE,
-    // GET_SCHEDULE,
+    GET_SCHEDULE,
+    SET_CURRENT_ITEMS,
+    // SET_LOADING,
+    // SET_TODAY,
+    SET_CURR_DAY,
+    SET_NEXT_DAY,
+    SET_PREV_DAY,
+    SEARCH_SCHEDULE,
+    CLEAR_SEARCH_RESULTS,
     // ERROR,
 } from '../actions/types';
 
-// const jsonHeader = {
-//     headers: {
-//         // 'Content-Type': 'application/json',
-//         'Origin': 'http://localhost:3000',
-//     }
-// }
+export const getSchedule = () => async dispatch => {
+    // Get schedule for the next four weeks
+    var today = new Date();
+    var futureDate = new Date();
+    futureDate.setDate(futureDate.getDate() + 180);
 
-export const getTodaysSchedule = () => async dispatch => {
-    // Get todays schedule from oicwebapps.com
-    
+    var startDate = formatDate(today);
+    var endDate = formatDate(futureDate);
+    const jsonDataPullURL = `https://ozaukeeicecenter.schedulewerks.com/public/ajax/swCalGet?tid=-1&from=${startDate}&to=${endDate}&Complex=-1`
+
     try {
-        const res = await axios.get('https://www.oicwebapps.com/web_apps/schedule/api/');
-        console.log(res)
+        const res = await axios.get(jsonDataPullURL);
         dispatch({
-            type: GET_TODAYS_SCHEDULE,
+            type: GET_SCHEDULE,
             payload: res.data
-        });
+        })
     } catch (err) {
         console.log(err);
     }
+};
+
+export const setCurrDay = (date) => {
+    return {
+        type: SET_CURR_DAY,
+        payload: date,
+    }
+};
+
+export const setNextDay = (date) => {
+    return {
+        type: SET_NEXT_DAY,
+        payload: date,
+    }
+};
+
+export const setPrevDay = (date) => {
+    return {
+        type: SET_PREV_DAY,
+        payload: date,
+    }
+};
+
+export const setCurrentItems = (items) => {
+    return {
+        type: SET_CURRENT_ITEMS,
+        payload: items,
+    }
 }
 
-// export const getSchedule = () => async dispatch => {
-//     // Get schedule for the next four weeks
-//     var today = new Date();
-//     var dd = String(today.getDate()).padStart(2, '0');
-//     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-//     var yy = today.getFullYear();
-//     console.log(yy)
+export const searchSchedule = (text) => {
+    return {
+        type: SEARCH_SCHEDULE,
+        payload: text,
+    }
+}
 
-//     var futureDate = today.setDate(today.getDate() + 30);
-//     var fdd = String(futureDate.getDate()).padStart(2, '0');
-//     var fmm = String(futureDate.getMonth() + 1).padStart(2, '0'); //January is 0!
-//     var fyy = futureDate.getFullYear();
-
-//     startDate = mm + '/' + dd + '/' + yy;
-//     endDate = fmm + '/' + fdd + '/' + fyy;
-//     const jsonDataPullURL = `https://ozaukeeicecenter.schedulewerks.com/public/ajax/swCalGet?tid=-1&from=${startDate}&to=${endDate}&Complex=-1`
-
-//     try {
-//         const res = await axios.get(jsonDataPullURL);
-//         dispatch({
-//             type: GET_SCHEDULE,
-//             payload: res.data
-//         })
-//     } catch (err) {
-//         console.log(err);
-//     }
-// };
+export const clearSearchResults = () => {
+    return {
+        type: CLEAR_SEARCH_RESULTS,
+    }
+}
