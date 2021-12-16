@@ -2,10 +2,9 @@ import React, { Fragment, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import 'react-datepicker/dist/react-datepicker.css';
-// import { PacmanLoader } from 'react-spinners';
 import {getSchedule, setCurrDay, 
         setCurrentItems, setNextDay, setPrevDay, 
-        clearSearchResults} from '../../actions/scheduleActions';
+        clearSearchResults, setNorth, setSouth} from '../../actions/scheduleActions';
 import ScheduleItem from './ScheduleItem';
 import Calendar from './Calendar';
 import Search from './Search';
@@ -20,8 +19,8 @@ tomorrow.setDate(tomorrow.getDate() + 1);
 let yesterday = new Date();
 yesterday.setDate(yesterday.getDate() - 1);
 
-const DailySchedule = ({ schedule: { scheduleItems, currentItems, loading, currDay, nextDay, prevDay, searchResults}, 
-    getSchedule, setCurrDay, setNextDay, setPrevDay, setCurrentItems, clearSearchResults }) => {
+const DailySchedule = ({ schedule: { scheduleItems, currentItems, loading, currDay, nextDay, prevDay, searchResults, north, south}, 
+    getSchedule, setCurrDay, setNextDay, setPrevDay, setCurrentItems, clearSearchResults, setSouth, setNorth }) => {
     const [width, setWidth] = useState(window.innerWidth);
 
     useEffect(() => {
@@ -39,9 +38,15 @@ const DailySchedule = ({ schedule: { scheduleItems, currentItems, loading, currD
         }
     }, [])
     
-    
     const updateCurrentItems = (date) => {
         let items = scheduleItems.filter(item => item.start_date.startsWith(date) === true);
+
+        if (!north) {
+            items = items.filter(item => item.text.search('North') === -1)
+        }
+        if (!south) {
+            items = items.filter(item => item.text.search('South') === -1)
+        }
         setCurrentItems(items);
     }
 
@@ -61,11 +66,8 @@ const DailySchedule = ({ schedule: { scheduleItems, currentItems, loading, currD
         return (
             <Fragment>
                 <div className='toggle-container'>
-                    <div id="toggleClose" className="toggle-close" onClick={closeToggle}>
-                        <div className="hide-text">Hide Search &amp; Date Picker</div>
-                    </div>
                     <div id="toggleOpen" className="toggle-open" onClick={openToggle}>
-                        <div className="show-text">Show Search &amp; Date Picker</div>
+                        <div className="show-text">Open Search &amp; Date Picker</div>
                     </div>
                 </div>
             </Fragment>
@@ -89,6 +91,24 @@ const DailySchedule = ({ schedule: { scheduleItems, currentItems, loading, currD
                         toggle={width <= 550}
                     />
                 </div>
+                {searchResults === null &&
+                <div className='checkboxes'>
+                    <div>
+                        <label htmlFor='north'>North Rink</label>&nbsp;
+                        <input id='north' type='checkbox' name='north' checked={north} onChange={() => setNorth()} />
+                    </div>
+                    <div>
+                        <label htmlFor='south'>South Rink</label>&nbsp;
+                        <input id='south' type='checkbox' name='south' checked={south} onChange={() => setSouth()} />
+                    </div>
+                    <div>
+                        <a href='!#' className='btn btn-dark btn-nav btn-update' onClick={() => updateCurrentItems(formatDate(currDay))}>Update</a>
+                    </div>
+                </div>}
+                { width <= 550 &&
+                <div>
+                    <a href='!#' className='btn btn-blue btn-nav close-button' onClick={closeToggle}>Close</a>
+                </div>}
             </div>
             {width <= 550 ? <Toggle /> : ''}
             {searchResults !== null ?
@@ -101,21 +121,21 @@ const DailySchedule = ({ schedule: { scheduleItems, currentItems, loading, currD
                 {currDay !== null && nextDay !== null ?
                 <div className='schedule-nav'>
                     <div className=''>
-                        <a href="!#" className='nav-link' onClick={() => {updateCurrentItems(formatDate(prevDay)); decrementDays(prevDay)}}>{prevDay !== null ? formatDate(prevDay) : ''}</a>
+                        <a href="!#" className='btn btn-blue btn-nav' onClick={() => {updateCurrentItems(formatDate(prevDay)); decrementDays(prevDay)}}>
+                            {formatDate(prevDay)}</a>
                     </div>
                     <div>
                         <div className="currentDay">{formatDate(currDay)}</div>
                     </div>
                     <div>
-                        <a href="#!" className='nav-link' onClick={() => {updateCurrentItems(formatDate(nextDay)); incrementDays(currDay)}}>
-                        {formatDate(nextDay)}</a></div>
+                        <a href="#!" className='btn btn-green btn-nav' onClick={() => {updateCurrentItems(formatDate(nextDay)); incrementDays(currDay)}}>
+                            {formatDate(nextDay)}</a></div>
                     </div>
                     : <p></p> }
                 {loading ? <div className='spinner'><img src={hockeyFight} alt='Loading Data' /><p>Getting things ready....</p></div> :
                 currentItems.length === 0 ? <h2 className='no-results'>Nothing on Schedule</h2> : currentItems.map(item => <ScheduleItem key={item.id} item={item} />)}
             </div>}
         </div>
-        // <div className='spinner'><PacmanLoader color='blue' loading={loading} size={40} margin={10} /></div>?
     )
 }
 
@@ -127,6 +147,8 @@ DailySchedule.propTypes = {
     setNextDay: PropTypes.func.isRequired,
     setPrevDay: PropTypes.func.isRequired,
     clearSearchResults: PropTypes.func.isRequired,
+    setNorth: PropTypes.func.isRequired,
+    setSouth: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = state => ({
@@ -134,4 +156,4 @@ const mapStateToProps = state => ({
 })
 
 export default connect(mapStateToProps, { getSchedule, setCurrDay, setNextDay, setPrevDay,
-                                          setCurrentItems, clearSearchResults })(DailySchedule);
+                                          setCurrentItems, clearSearchResults, setNorth, setSouth })(DailySchedule);

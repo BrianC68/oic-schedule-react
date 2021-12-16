@@ -1,13 +1,13 @@
 import {
     GET_SCHEDULE,
     SET_CURRENT_ITEMS,
-    // SET_LOADING,
-    // SET_TODAY,
     SET_CURR_DAY,
     SET_NEXT_DAY,
     SET_PREV_DAY,
     SEARCH_SCHEDULE,
-    CLEAR_SEARCH_RESULTS
+    CLEAR_SEARCH_RESULTS,
+    SET_NORTH,
+    SET_SOUTH
 } from '../actions/types';
 import formatDate from '../utils/formatDate';
 
@@ -19,6 +19,8 @@ const initialState = {
     prevDay: null,
     currDay: null,
     nextDay: null,
+    north: true,
+    south: true,
 }
 
 let today = new Date();
@@ -38,11 +40,6 @@ const schedule = (state = initialState, action) => {
                 ...state,
                 currentItems: action.payload,
             }
-        // case SET_TODAY:
-        //     return {
-        //         ...state,
-        //         todaysDate: action.payload,
-        //     }
         case SET_CURR_DAY:
             return {
                 ...state,
@@ -67,6 +64,16 @@ const schedule = (state = initialState, action) => {
             return {
                 ...state,
                 searchResults: null,
+            }
+        case SET_NORTH:
+            return {
+                ...state,
+                north: !state.north,
+            }
+        case SET_SOUTH:
+            return {
+                ...state,
+                south: !state.south,
             }
         default:
             return {

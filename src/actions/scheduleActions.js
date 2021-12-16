@@ -3,13 +3,13 @@ import formatDate from "../utils/formatDate";
 import {
     GET_SCHEDULE,
     SET_CURRENT_ITEMS,
-    // SET_LOADING,
-    // SET_TODAY,
     SET_CURR_DAY,
     SET_NEXT_DAY,
     SET_PREV_DAY,
     SEARCH_SCHEDULE,
     CLEAR_SEARCH_RESULTS,
+    SET_NORTH,
+    SET_SOUTH,
     // ERROR,
 } from '../actions/types';
 
@@ -17,7 +17,7 @@ export const getSchedule = () => async dispatch => {
     // Get schedule for the next four weeks
     var today = new Date();
     var futureDate = new Date();
-    futureDate.setDate(futureDate.getDate() + 180);
+    futureDate.setDate(futureDate.getDate() + 120);
 
     var startDate = formatDate(today);
     var endDate = formatDate(futureDate);
@@ -72,5 +72,17 @@ export const searchSchedule = (text) => {
 export const clearSearchResults = () => {
     return {
         type: CLEAR_SEARCH_RESULTS,
+    }
+}
+
+export const setNorth = () => {
+    return {
+        type: SET_NORTH,
+    }
+}
+
+export const setSouth = () => {
+    return {
+        type: SET_SOUTH,
     }
 }
