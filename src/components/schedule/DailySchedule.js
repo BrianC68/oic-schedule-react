@@ -4,10 +4,11 @@ import { connect } from 'react-redux';
 import 'react-datepicker/dist/react-datepicker.css';
 import {getSchedule, setCurrDay, 
         setCurrentItems, setNextDay, setPrevDay, 
-        clearSearchResults, setNorth, setSouth} from '../../actions/scheduleActions';
+        clearSearchResults} from '../../actions/scheduleActions';
 import ScheduleItem from './ScheduleItem';
 import Calendar from './Calendar';
 import Search from './Search';
+import RinkFilters from './RinkFilters';
 import formatDate from '../../utils/formatDate';
 import { openToggle, closeToggle } from '../../utils/toggleSearchCalendar';
 import hockeyFight from '../../images/hockey-fight-animated.gif';
@@ -20,7 +21,7 @@ let yesterday = new Date();
 yesterday.setDate(yesterday.getDate() - 1);
 
 const DailySchedule = ({ schedule: { scheduleItems, currentItems, loading, currDay, nextDay, prevDay, searchResults, north, south}, 
-    getSchedule, setCurrDay, setNextDay, setPrevDay, setCurrentItems, clearSearchResults, setSouth, setNorth }) => {
+    getSchedule, setCurrDay, setNextDay, setPrevDay, setCurrentItems, clearSearchResults }) => {
     const [width, setWidth] = useState(window.innerWidth);
 
     useEffect(() => {
@@ -92,19 +93,7 @@ const DailySchedule = ({ schedule: { scheduleItems, currentItems, loading, currD
                     />
                 </div>
                 {searchResults === null &&
-                <div className='checkboxes'>
-                    <div>
-                        <label htmlFor='north'>North Rink</label>&nbsp;
-                        <input id='north' type='checkbox' name='north' checked={north} onChange={() => setNorth()} />
-                    </div>
-                    <div>
-                        <label htmlFor='south'>South Rink</label>&nbsp;
-                        <input id='south' type='checkbox' name='south' checked={south} onChange={() => setSouth()} />
-                    </div>
-                    <div>
-                        <a href='!#' className='btn btn-dark btn-nav btn-update' onClick={() => updateCurrentItems(formatDate(currDay))}>Update</a>
-                    </div>
-                </div>}
+                <RinkFilters updateCurrentItems={updateCurrentItems} />}
                 { width <= 550 &&
                 <div>
                     <a href='!#' className='btn btn-blue btn-nav close-button' onClick={closeToggle}>Close</a>
@@ -132,7 +121,7 @@ const DailySchedule = ({ schedule: { scheduleItems, currentItems, loading, currD
                             {formatDate(nextDay)}</a></div>
                     </div>
                     : <p></p> }
-                {loading ? <div className='spinner'><img src={hockeyFight} alt='Loading Data' /><p>Getting things ready....</p></div> :
+                {loading ? <div className='spinner'><img src={hockeyFight} alt='Loading Data' /><p>Massaging the data...</p></div> :
                 currentItems.length === 0 ? <h2 className='no-results'>Nothing on Schedule</h2> : currentItems.map(item => <ScheduleItem key={item.id} item={item} />)}
             </div>}
         </div>
@@ -147,8 +136,6 @@ DailySchedule.propTypes = {
     setNextDay: PropTypes.func.isRequired,
     setPrevDay: PropTypes.func.isRequired,
     clearSearchResults: PropTypes.func.isRequired,
-    setNorth: PropTypes.func.isRequired,
-    setSouth: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = state => ({
@@ -156,4 +143,4 @@ const mapStateToProps = state => ({
 })
 
 export default connect(mapStateToProps, { getSchedule, setCurrDay, setNextDay, setPrevDay,
-                                          setCurrentItems, clearSearchResults, setNorth, setSouth })(DailySchedule);
+                                          setCurrentItems, clearSearchResults })(DailySchedule);

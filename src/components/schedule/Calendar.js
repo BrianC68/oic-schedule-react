@@ -6,11 +6,13 @@ import { setCurrDay, setPrevDay, setNextDay, clearSearchResults } from '../../ac
 import formatDate from '../../utils/formatDate';
 
 
-const Calendar = ({ setCurrDay, setPrevDay, setNextDay, updateCurrentItems, clearSearchResults, closeToggle, toggle }) => {
+const Calendar = ({ setCurrDay, setPrevDay, setNextDay, updateCurrentItems, clearSearchResults, closeToggle, toggle, searchResults }) => {
     const [searchDate, setSearchDate] = useState(new Date());
 
     const goToDate = (date) => {
-        clearSearchResults();
+        if (searchResults !== null) {
+            clearSearchResults();
+        }
         updateCurrentItems(formatDate(date));
         setCurrDay(new Date(date));
         setPrevDay(new Date(date.setDate(date.getDate() - 1)));
@@ -40,4 +42,8 @@ Calendar.propTypes = {
     setNextDay: PropTypes.func.isRequired,
 }
 
-export default connect(null, { setCurrDay, setNextDay, setPrevDay, clearSearchResults })(Calendar)
+const mapStateToProps = state => ({
+    searchResults: state.schedule.searchResults,
+})
+
+export default connect(mapStateToProps, { setCurrDay, setNextDay, setPrevDay, clearSearchResults })(Calendar)

@@ -241,6 +241,7 @@ h1 {
   .checkboxes > div {
     margin-left: 10px;
     margin-right: 10px;
+    margin-bottom: 0px !important;
   }
 
   .checkboxes > div:last-child a {
@@ -249,6 +250,7 @@ h1 {
 
   .footer {
     height: 60px;
+    font-size: .8rem;
   }
 
   .btn-update {
@@ -284,6 +286,7 @@ h1 {
   .calendar {
     border-bottom: 1px solid #ccc;
     padding-bottom: 15px;
+    width: 360px;
   }
 
   .searchContainer {
@@ -307,7 +310,7 @@ h1 {
   }
 
   .close-button {
-    margin-top: 3rem !important;
+    margin-top: 2rem !important;
     padding: .5rem 1.5rem !important;
 
   }
@@ -318,5 +321,15 @@ h1 {
 
   .checkboxes {
     flex-direction: column;
+  }
+
+  .checkboxes > div {
+    margin-bottom: 10px !important;
+  }
+}
+
+@media only screen and (max-height: 600px) {
+  .close-button {
+    margin-top: .8rem !important;
   }
 }
