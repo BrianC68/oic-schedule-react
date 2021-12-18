@@ -6,6 +6,11 @@ import { setNorth, setSouth } from '../../actions/scheduleActions';
 import formatDate from '../../utils/formatDate';
 
 const RinkFilters = ({ north, south, currDay, setNorth, setSouth, updateCurrentItems }) => {
+
+    const scrollToTop = () => {
+        window.scrollTo({ top: 0, left: 0, behavior: 'smooth'});
+    }
+
     return (
         <div className='checkboxes'>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '10px' }}>
@@ -16,10 +21,10 @@ const RinkFilters = ({ north, south, currDay, setNorth, setSouth, updateCurrentI
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <label htmlFor='south'>South Rink</label>&nbsp;
                 {/* <input id='south' type='checkbox' name='south' checked={south} onChange={() => setSouth()} /> */}
-                <Switch id='north' onChange={() => setSouth()} checked={south} height={20} width={52} handleDiameter={18} onColor='#006400' />
+                <Switch id='south' onChange={() => setSouth()} checked={south} height={20} width={52} handleDiameter={18} onColor='#006400' />
             </div>
             <div>
-                <a href='!#' className='btn btn-dark btn-nav btn-update' onClick={() => updateCurrentItems(formatDate(currDay))}>Update</a>
+                <button type="button" href='!#' className='btn btn-dark btn-nav btn-update' onClick={() => {updateCurrentItems(formatDate(currDay)); scrollToTop()}}>Update</button>
             </div>
         </div>
     )

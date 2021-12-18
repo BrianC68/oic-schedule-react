@@ -37,8 +37,12 @@ const DailySchedule = ({ schedule: { scheduleItems, currentItems, loading, currD
         return () => {
             window.removeEventListener("resize", handleWindowResize);
         }
-    }, [])
+    }, []);
     
+    // if (width > 550) {
+    //     document.getElementById('toggle-content').style.top = '129px';
+    // } 
+
     const updateCurrentItems = (date) => {
         let items = scheduleItems.filter(item => item.start_date.startsWith(date) === true);
 
@@ -76,7 +80,7 @@ const DailySchedule = ({ schedule: { scheduleItems, currentItems, loading, currD
     }
 
     return (
-        <div className='main-container'>
+        <div className='main-container' id="main">
             <div className='left-side' id="toggle-content">
                 <div className='calendar'>
                     <Calendar 

@@ -18,10 +18,11 @@ const Calendar = ({ setCurrDay, setPrevDay, setNextDay, updateCurrentItems, clea
         setPrevDay(new Date(date.setDate(date.getDate() - 1)));
         setNextDay(new Date(date.setDate(date.getDate() + 2)));
         setSearchDate(date.setDate(date.getDate() - 1));
+        window.scrollTo({ top: 0, left: 0, behavior: 'smooth'});
     }
 
     const ButtonInput = forwardRef(({ value, onClick }, ref) => (
-        <a href='!#' className='btn btn-dark' onClick={onClick} ref={ref}>{value}</a>
+        <button type='button' className='btn btn-dark' onClick={onClick} ref={ref}>{value}</button>
     ));
 
     return (
