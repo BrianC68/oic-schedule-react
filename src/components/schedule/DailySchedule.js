@@ -20,8 +20,9 @@ tomorrow.setDate(tomorrow.getDate() + 1);
 let yesterday = new Date();
 yesterday.setDate(yesterday.getDate() - 1);
 
-const DailySchedule = ({ schedule: { scheduleItems, currentItems, loading, currDay, nextDay, prevDay, searchResults, north, south}, 
-    getSchedule, setCurrDay, setNextDay, setPrevDay, setCurrentItems, clearSearchResults }) => {
+const DailySchedule = ({ schedule: { scheduleItems, currentItems, loading, currDay, nextDay,
+     prevDay, searchResults, north, south, error}, getSchedule, setCurrDay, setNextDay, setPrevDay, 
+     setCurrentItems, clearSearchResults }) => {
     const [width, setWidth] = useState(window.innerWidth);
 
     useEffect(() => {
@@ -58,13 +59,22 @@ const DailySchedule = ({ schedule: { scheduleItems, currentItems, loading, currD
     const incrementDays = (date) => {
         setPrevDay(new Date(date));
         setCurrDay(new Date(nextDay));
-        setNextDay(new Date(date.setDate(date.getDate() + 2)));
+        setNextDay(new Date(date.setDate(date.getDate() + 2))); // Current day plus 2 days
     }
 
     const decrementDays = (date) => {
         setNextDay(new Date(currDay));
         setCurrDay(new Date(prevDay));
-        setPrevDay(new Date(date.setDate(date.getDate() - 1)));
+        setPrevDay(new Date(date.setDate(date.getDate() - 1))); // Previous day minus 1 day
+    }
+
+    const getErrorMessage = () => {
+        console.log(error)
+        if (error === 'Network Error') {
+            return 'Oops, looks like you don\'t have internet right now.  Try again later.'
+        } else {
+            return error;
+        }
     }
 
     const Toggle = () => {
@@ -100,7 +110,7 @@ const DailySchedule = ({ schedule: { scheduleItems, currentItems, loading, currD
                 <RinkFilters updateCurrentItems={updateCurrentItems} />}
                 { width <= 550 &&
                 <div>
-                    <a href='!#' className='btn btn-blue btn-nav close-button' onClick={closeToggle}>Close</a>
+                    <buttona href='!#' type='button' className='btn btn-blue btn-nav close-button' onClick={closeToggle}>Close</buttona>
                 </div>}
             </div>
             {width <= 550 ? <Toggle /> : ''}
@@ -109,24 +119,26 @@ const DailySchedule = ({ schedule: { scheduleItems, currentItems, loading, currD
                 <h3 className='search-results'>Search Results</h3>
                 {searchResults.length === 0 ? <h2 className='no-results'>No Search Results</h2> : searchResults.map(item => <ScheduleItem key={item.id} item={item} />)}
             </div>
-            :
+            : /* else if searchResults === null, show schedule items */
             <div className='schedule-items'>
                 {currDay !== null && nextDay !== null ?
                 <div className='schedule-nav'>
                     <div className=''>
-                        <a href="!#" className='btn btn-blue btn-nav' onClick={() => {updateCurrentItems(formatDate(prevDay)); decrementDays(prevDay)}}>
-                            {formatDate(prevDay)}</a>
+                        <button href="!#" type='button' className='btn btn-blue btn-nav' onClick={() => {updateCurrentItems(formatDate(prevDay)); decrementDays(prevDay)}}>
+                            {formatDate(prevDay)}</button>
                     </div>
                     <div>
                         <div className="currentDay">{formatDate(currDay)}</div>
                     </div>
                     <div>
-                        <a href="#!" className='btn btn-green btn-nav' onClick={() => {updateCurrentItems(formatDate(nextDay)); incrementDays(currDay)}}>
-                            {formatDate(nextDay)}</a></div>
+                        <button href="#!" type='button' className='btn btn-green btn-nav' onClick={() => {updateCurrentItems(formatDate(nextDay)); incrementDays(currDay)}}>
+                            {formatDate(nextDay)}</button></div>
                     </div>
-                    : <p></p> }
-                {loading ? <div className='spinner'><img src={hockeyFight} alt='Loading Data' /><p>Massaging the data...</p></div> :
-                currentItems.length === 0 ? <h2 className='no-results'>Nothing on Schedule</h2> : currentItems.map(item => <ScheduleItem key={item.id} item={item} />)}
+                    : <p></p> /* Avoid errors with formatDate() if dates are null */ }
+                {loading ? <div className='spinner'><img src={hockeyFight} alt='Loading Data' /><p>Massaging the data...</p></div> : /* if Loading true */
+                error !== null ? <p className='no-results'>{getErrorMessage()}</p> : /* if there's an error display a message */
+                currentItems.length === 0 ? <h2 className='no-results'>Nothing on Schedule</h2> : /* if schedule is empty that day */
+                currentItems.map(item => <ScheduleItem key={item.id} item={item} />)}
             </div>}
         </div>
     )

@@ -10,7 +10,7 @@ import {
     CLEAR_SEARCH_RESULTS,
     SET_NORTH,
     SET_SOUTH,
-    // ERROR,
+    ERROR,
 } from '../actions/types';
 
 export const getSchedule = () => async dispatch => {
@@ -31,6 +31,10 @@ export const getSchedule = () => async dispatch => {
         })
     } catch (err) {
         console.log(err);
+        dispatch({
+            type: ERROR,
+            payload: err,
+        });
     }
 };
 

@@ -7,7 +7,8 @@ import {
     SEARCH_SCHEDULE,
     CLEAR_SEARCH_RESULTS,
     SET_NORTH,
-    SET_SOUTH
+    SET_SOUTH,
+    ERROR,
 } from '../actions/types';
 import formatDate from '../utils/formatDate';
 
@@ -21,6 +22,7 @@ const initialState = {
     nextDay: null,
     north: true,
     south: true,
+    error: null,
 }
 
 let today = new Date();
@@ -34,6 +36,7 @@ const schedule = (state = initialState, action) => {
                 scheduleItems: action.payload,
                 currentItems: action.payload.filter(item => item.start_date.startsWith(currentDate) === true),
                 loading: false,
+                error: null,
             }
         case SET_CURRENT_ITEMS:
             return {
@@ -74,6 +77,12 @@ const schedule = (state = initialState, action) => {
             return {
                 ...state,
                 south: !state.south,
+            }
+        case ERROR:
+            return {
+                ...state,
+                error: action.payload.message,
+                loading: false,
             }
         default:
             return {

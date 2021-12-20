@@ -7,3 +7,4 @@ export const SEARCH_SCHEDULE = 'SEARCH_SCHEDULE';
 export const CLEAR_SEARCH_RESULTS = 'CLEAR_SEARCH_RESULTS';
 export const SET_NORTH = 'SET_NORTH';
 export const SET_SOUTH = 'SET_SOUTH';
+export const ERROR = 'ERROR';
