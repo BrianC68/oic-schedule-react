@@ -31,6 +31,9 @@ body {
 }
 
 .header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding-bottom: 15px;
   padding-top: 15px;
   background-color: #EBEDEF;
@@ -362,4 +365,13 @@ label {
   .close-button {
     margin-top: .8rem !important;
   }
+
+  .main-container {
+    padding-top: 0;
+  }
+
+  .left-side {
+    padding-top: 0;
+  }
+  
 }

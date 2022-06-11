@@ -4,7 +4,7 @@ import Switch from "react-switch";
 import { setNorth, setSouth } from "../../store/schedule-actions";
 import formatDate from "../../utils/formatDate";
 
-const RinkFilters = (updateCurrentItems) => {
+const RinkFilters = ({ updateCurrentItems }) => {
   const dispatch = useDispatch();
   const schedule = useSelector((state) => state.schedule);
 
