@@ -162,9 +162,13 @@ label {
 
 .schedule-item {
   padding: 10px;
-  margin: 10px;
   color: white;
-  margin: 10px auto;
+  margin: 10px auto 15px;
+  border-radius: 8px;
+  box-shadow: 0 5px 5px #666;
+
+  animation-name: fadeIn;
+  animation-duration: 1s;
 }
 
 .spinner {
@@ -234,6 +238,10 @@ label {
 
   .schedule-items {
     padding-left: 0;
+  }
+
+  .schedule-item {
+  border-radius: 0;
   }
 
   .header {
@@ -374,4 +382,37 @@ label {
     padding-top: 0;
   }
   
+}
+
+@keyframes fadeIn {
+  10% {
+      opacity: .1;
+  }
+  20% {
+      opacity: .2;
+  }
+  30% {
+      opacity: .3;
+  }
+  40% {
+      opacity: .4;
+  }
+  50% {
+      opacity: .5;
+  }
+  60% {
+      opacity: 6;
+  }
+  70% {
+      opacity: 7;
+  }
+  80% {
+      opacity: 8;
+  }
+  90% {
+      opacity: 9;
+  }
+  100% {
+      opacity: 10;
+  }
 }
