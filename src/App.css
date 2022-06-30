@@ -401,18 +401,18 @@ label {
       opacity: .5;
   }
   60% {
-      opacity: 6;
+      opacity: .6;
   }
   70% {
-      opacity: 7;
+      opacity: .7;
   }
   80% {
-      opacity: 8;
+      opacity: .8;
   }
   90% {
-      opacity: 9;
+      opacity: .9;
   }
   100% {
-      opacity: 10;
+      opacity: 1;
   }
 }
