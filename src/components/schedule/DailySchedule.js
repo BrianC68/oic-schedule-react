@@ -50,10 +50,10 @@ const DailySchedule = () => {
     );
 
     if (!schedule.north) {
-      items = items.filter((item) => item.text.search("North") === -1);
+      items = items.filter((item) => item.text.search("North Rink") === -1);
     }
     if (!schedule.south) {
-      items = items.filter((item) => item.text.search("South") === -1);
+      items = items.filter((item) => item.text.search("South Rink") === -1);
     }
     dispatch(setCurrentItems(items));
   };

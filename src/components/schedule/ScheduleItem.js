@@ -5,9 +5,9 @@ const ScheduleItem = ({ item }) => {
     <div
       className="schedule-item"
       style={{
-        ...(item.text.includes("North")
+        ...(item.text.includes("North Rink")
           ? northRinkStyles
-          : item.text.includes("South")
+          : item.text.includes("South Rink")
           ? southRinkStyles
           : meetingRoomStyles),
       }}
